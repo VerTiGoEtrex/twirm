@@ -1,6 +1,8 @@
 // main/twirm.cpp*
-#include "api.h"
-#include <iostream>
+#include "api.hpp"
+#include "parallel.hpp"
+
+using namespace twirm;
 
 // main program
 int main(int argc, char *argv[]) {
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]) {
   if (!options.quiet) {
     cout << "twirm version " << TWIRM_VERSION << " of "
       << __DATE__ << " at " << __TIME__ << " [Detected "
-      << NumSystemCores() << " core(s)] \n";
+      << NumSystemCores() << " available core(s)] \n";
   }
   cout << "TODO!\n";
   return 0;

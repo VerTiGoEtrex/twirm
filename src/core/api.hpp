@@ -4,7 +4,9 @@
 // core/api.h*
 #include "twirm.hpp"
 
+namespace twirm {
 // API Fuction Declarations
-void twirmInit(const Options &opt);
-void twirmCleanup();
+  void twirmInit(const Options &opt);
+  void twirmCleanup();
+}
 #endif

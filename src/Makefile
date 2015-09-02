@@ -13,6 +13,7 @@ DEFS += -DNDEBUG
 #######
 
 ARCH = $(shell uname)
+OPT += --std=c++11
 
 ifeq ($(HAVE_DTRACE),1)
 	DEFS += -DTWIRM_PROBES_DTRACE
@@ -23,7 +24,7 @@ endif
 CC=clang
 CXX=clang++
 LD=$(CXX) $(OPT) $(MARCH)
-INCLUDE=-I. -Icore
+INCLUDE=-I. -Icore -I3rdparty/catch
 WARN=-Wall
 CWD=$(shell pwd)
 CXXFLAGS=$(OPT) $(MARCH) $(INCLUDE) $(WARN) $(DEFS)
@@ -31,15 +32,16 @@ CCFLAGS=$(CXXFLAGS)
 LIBS=
 
 LIB_CSRCS=
-LIB_CXX_SRCS  = $(wildcard core/*.cpp game/*.cpp ai/*.cpp)
+LIB_CXXSRCS  = $(wildcard core/*.cpp game/*.cpp ai/*.cpp)
 
 LIB_OBJS  = $(addprefix objs/, $(subst /,_,$(LIB_CSRCS:.c=.o)))
 LIB_OBJS += $(addprefix objs/, $(subst /,_,$(LIB_CXXSRCS:.cpp=.o)))
+#$(info $$LIB_OBJS is [${LIB_OBJS}])
 
 HEADERS = $(wildcard */*.h */*.hpp)
 
 #TODO add board-making gui tool
-TOOLS=
+TOOLS=bin/catchRunner
 
 ##########
 # build! #
@@ -60,26 +62,30 @@ $(LIBOBJS): $(HEADERS)
 .SECONDARY:
 
 # LIBRARIES
-objs/libtwirm.a: $(LIBOBJS)
+objs/libtwirm.a: $(LIB_OBJS)
 	@echo "Building the core twirm library (libtwirm.a)"
-	@ar rcs $@ $(LIBOBJS)
+	ar rcs $@ $(LIB_OBJS)
 
 # OBJECTS
 objs/ai_%.o: ai/%.cpp
 	@echo "Building object $@"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 objs/core_%.o: core/%.cpp
 	@echo "Building object $@"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 objs/game_%.o: game/%.cpp
 	@echo "Building object $@"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-objs/twirm.o: main/%.cpp
+objs/main_%.o: main/%.cpp
 	@echo "Building object $@"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+objs/tools_%.o: tools/%.cpp
+	@echo "Building object $@"
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 # BINARIES
 # #TWIRM
