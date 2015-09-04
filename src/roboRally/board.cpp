@@ -5,6 +5,12 @@ namespace twirm {
     assert(!boardTiles.empty() && !boardTiles[0].empty());
     w = boardTiles.size();
     h = boardTiles[0].size();
+    boardTiles = new ITiles[w*h];
+  }
+
+  Board::~Board() {
+    delete[] boardTiles;
+    boardTiles = 0;
   }
 
   Board Board::readFromFile(const string &filePath) {
