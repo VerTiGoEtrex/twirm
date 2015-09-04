@@ -4,7 +4,7 @@ namespace twirm {
   gameState Tile::executeEdges(const gameState &game) {
     gameState current = game;
     for (IEdge e : edges) {
-      current = e.execute(game)
+      current = e.execute(current)
     }
     return current;
   }
