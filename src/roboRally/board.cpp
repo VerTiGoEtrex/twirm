@@ -1,16 +1,15 @@
 #include "board.hpp"
 
 namespace twirm {
-  Board::Board(vector<vector<ITile>> boardTiles) {
+  Board::Board(vector<vector<ITile>> boardTiles, vector<IEdge*> laserTiles) {
     assert(!boardTiles.empty() && !boardTiles[0].empty());
     w = boardTiles.size();
     h = boardTiles[0].size();
-    boardTiles = new ITiles[w*h];
+    boardTiles(w*h);
+    laserEdges(numLasers);
   }
 
   Board::~Board() {
-    delete[] boardTiles;
-    boardTiles = 0;
   }
 
   Board Board::readFromFile(const string &filePath) {

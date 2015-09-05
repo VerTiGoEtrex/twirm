@@ -5,13 +5,18 @@
 namespace twirm {
   class Board {
     public:
+      // Constructors
       Board(std::vector<std::vector<ITile>> boardTiles);
       ~Board();
-      Board readFromFile(const std::string &filePath);
+      static Board readFromFile(const std::string &filePath);
+
+      // Public methods
       friend std::ostream& operator<<(std::ostream &os, const Board& b);
+
     private:
       int w, h;
-      ITile boardTiles[]; //unique_ptr is too slow for such a high-contention data structure
+      std::vector<ITile> boardTiles;
+      std::vector<IEdge*> laserEdges;
   }
 }
 
